@@ -15,18 +15,18 @@
         <h1>Hello World! primeira aplicação java web</h1>
         <h5>Teste H5</h5>
         
-        <form action="resultado.html" method="post">
+        <form action="/WebApplication1/Novo" method="post">
             
             Nome:<input type="text" name="nome"/><br>
             Endereço:<input type="text" name="endereco"/><br>
              Estados:
              <select name="estados">
-                 <option>Opção 1</option>
-                 <option>Opção 2</option>
-                 <option>Opção 3</option>
-                 <option>Opção 4</option>
+                 <option>Pop</option>
+                 <option>Rock</option>
+                 <option>Soul</option>
+                 <option>Forro</option>
                  
-             </select><br>
+             </select ><br>
              
              Gostos musicais:<br>
              <input type="checkbox"/>Pop<br>
