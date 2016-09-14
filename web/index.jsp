@@ -16,6 +16,7 @@
         <h5>Teste H5</h5>
         
         <form action="/WebApplication1/Novo" method="post">
+            ${msgErro != null ? msgErro : ''}
             
             Nome:<input type="text" name="nome"/><br>
             Endereço:<input type="text" name="endereco"/><br>

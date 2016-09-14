@@ -7,6 +7,10 @@ package br.edu.modelo.pessoa;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Roberto Eder
  */
 //annotation.WebServlet para url em servlet
-@WebServlet(name ="novo" , urlPatterns = {"/novo","/Novo","/teste"})
+@WebServlet(name = "novo", urlPatterns = {"/novo"})
 public class Novo extends HttpServlet {
 
     /**
@@ -32,24 +36,50 @@ public class Novo extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-             String nome = "Roberto Eder";
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Novo</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Novo at " + request.getParameter("nome") +
-                   " endereço "+ request.getParameter("endereco")+ ", ela gosta de esculta " 
-                    + request.getParameter("estados")+"</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
+
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        request.setAttribute("data", dateFormat.format(new Date()));
+
+        
+        
+        String redirect = "jsp/exemplo.jsp";
+        if(validarCampos(request,response)){
+          redirect= "jsp/exemplo-result.jsp" ;
+        }       
+        RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);
+        dispatcher.forward(request, response);
+        
+    }
+
+    private boolean validarCampos(HttpServletRequest request, HttpServletResponse response) {
+
+        boolean retorno = true;
+        String msgErro = "teste";
+        String nome = request.getParameter("nome");
+        String endereco = request.getParameter("endereco");
+        String email = request.getParameter("email");
+        String cpf = request.getParameter("cpf");
+        String dtNasc = request.getParameter("dtNasc");
+
+        if (nome == null || "".equals(nome)) {
+            retorno = false;
+            msgErro = "Campo Nome Obrigatório";
+        } else if (endereco == null || "".equals(endereco)) {
+            retorno = false;
+            msgErro = "Campo endereço Obrigatório";
+        } else if (email == null || "".equals(email)) {
+            retorno = false;
+            msgErro = "Campo email Obrigatório";
+        } else if (cpf == null || "".equals(cpf)) {
+            retorno = false;
+            msgErro = "Campo CPF Obrigatório";
+        } else if (dtNasc == null || "".equals(dtNasc)) {
+            retorno = false;
+            msgErro = "Campo Data Nascimento Obrigatório";
         }
+        request.setAttribute("msgErro", msgErro);
+        return retorno;
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -90,5 +120,4 @@ public class Novo extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
