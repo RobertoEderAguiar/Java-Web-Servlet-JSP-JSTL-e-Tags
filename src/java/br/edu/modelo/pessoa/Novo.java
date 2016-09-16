@@ -5,8 +5,11 @@
  */
 package br.edu.modelo.pessoa;
 
+import br.edu.modelo.exception.ValidationException;
+import br.edu.modelo.validator.CPFValidator;
+import br.edu.modelo.validator.DataValidator;
 import java.io.IOException;
-import java.io.PrintWriter;
+import br.edu.modelo.validator.Validator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,43 +43,62 @@ public class Novo extends HttpServlet {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         request.setAttribute("data", dateFormat.format(new Date()));
 
-        
-        
+        String dtNasc = request.getParameter("dtNasc");
+          String cpf = request.getParameter("cpf");
+          
+        Validator dataValidator = new DataValidator();
+        Validator cpfValidator = new CPFValidator();
         String redirect = "jsp/exemplo.jsp";
-        if(validarCampos(request,response)){
-          redirect= "jsp/exemplo-result.jsp" ;
-        }       
+        try {
+            
+            if (validarCampos(request, response) & dataValidator.validar(dtNasc)  
+                    & cpfValidator.validar(cpf)){
+                redirect = "jsp/exemplo-result.jsp";
+            }
+        } catch (ValidationException e) {
+            String msgErro = "";
+            if(request.getAttribute("msgErro") != null){
+                msgErro = (String)request.getAttribute("msgErro");
+            }
+             msgErro +=e.getMessage() + "<br/>";
+            request.setAttribute("msgErro", msgErro);
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);
         dispatcher.forward(request, response);
-        
+
     }
 
     private boolean validarCampos(HttpServletRequest request, HttpServletResponse response) {
 
         boolean retorno = true;
-        String msgErro = "teste";
+        String msgErro = "";
         String nome = request.getParameter("nome");
         String endereco = request.getParameter("endereco");
         String email = request.getParameter("email");
         String cpf = request.getParameter("cpf");
         String dtNasc = request.getParameter("dtNasc");
+        
 
         if (nome == null || "".equals(nome)) {
             retorno = false;
-            msgErro = "Campo Nome Obrigatório";
-        } else if (endereco == null || "".equals(endereco)) {
-            retorno = false;
-            msgErro = "Campo endereço Obrigatório";
-        } else if (email == null || "".equals(email)) {
-            retorno = false;
-            msgErro = "Campo email Obrigatório";
-        } else if (cpf == null || "".equals(cpf)) {
-            retorno = false;
-            msgErro = "Campo CPF Obrigatório";
-        } else if (dtNasc == null || "".equals(dtNasc)) {
-            retorno = false;
-            msgErro = "Campo Data Nascimento Obrigatório";
+            msgErro += "Campo Nome Obrigatório<br/>";
         }
+        if (endereco == null || "".equals(endereco)) {
+            retorno = false;
+            msgErro += "Campo endereço Obrigatório<br/>";
+        }
+        if (email == null || "".equals(email)) {
+            retorno = false;
+            msgErro += "Campo email Obrigatório<br/>";
+        }
+        if (cpf == null || "".equals(cpf)) {
+            retorno = false;
+            msgErro += "Campo CPF Obrigatório<br/>";
+        }
+        if (dtNasc == null || "".equals(dtNasc)) {
+            retorno = false;
+            msgErro += "Campo Data Nascimento Obrigatório<br/>";
+        } 
         request.setAttribute("msgErro", msgErro);
         return retorno;
 

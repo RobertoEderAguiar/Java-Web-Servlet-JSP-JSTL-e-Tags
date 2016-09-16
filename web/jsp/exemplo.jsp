@@ -14,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        ${msgErro != null ? msgErro : ''}
+      
         <div style="width: 500px;border: 1px solid black; padding: 20px; margin: auto; align-self: center; ">
             <form action="../novo"  >
                  ${msgErro != null ? msgErro : ''}
@@ -22,23 +22,26 @@
                    
                     <tr>
                         <td>Nome:</td>
-                        <td><input type="text" name="nome"/></td>
+                        <td><input type="text" name="nome" value="${param.nome}"  /></td>
                     </tr>
                     <tr>
                         <td>Endereço:</td>
-                        <td><input type="text"  name="endereco"/></td>
+                        <td><input type="text"  name="endereco" value="${param.endereco}"  /></td>
                     </tr>
                     <tr>
                         <td>E-mail:</td>
-                    <td><input type="text" name="email" /></td> 
+                    <td><input type="text" name="email" value="${param.email}" /></td> 
                     </tr>
                     <tr>
                         <td>Data Nascimento:</td>
-                        <td><input type="text" name="dtNasc" /></td>
+                        <td><input type="text" name="dtNasc" value="${param.dtNasc} " 
+                                   title="Campo no formato dd/mm/yyyy"  maxlength="10"  /></td>
                     </tr>
+                    
                     <tr>
                         <td>CPF:</td>
-                        <td><input type="text" name="cpf" /></td>
+                        <td><input type="text" name="cpf" value="${param.cpf}" 
+                                   maxlength="11" pattern="[0-9]+$"/></td>
                     </tr>
                     <tr>
                     <td><input type="submit" value="Enviar"></td>
