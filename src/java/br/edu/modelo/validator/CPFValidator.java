@@ -23,7 +23,7 @@ public class CPFValidator implements Validator {
             if (cpf.length() != 11) {
                 msgErro += MensagemConstantes.MSG_ERR_CPF_VALIDATOR;
             }
-            if (isCPF(cpf)) {
+            if (!isCPF(cpf)) {
                 msgErro += MensagemConstantes.MSG_ERR_CPF_VALIDATOR;
             }
 
