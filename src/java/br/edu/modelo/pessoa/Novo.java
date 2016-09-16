@@ -44,23 +44,23 @@ public class Novo extends HttpServlet {
         request.setAttribute("data", dateFormat.format(new Date()));
 
         String dtNasc = request.getParameter("dtNasc");
-          String cpf = request.getParameter("cpf");
-          
+        String cpf = request.getParameter("cpf");
+
         Validator dataValidator = new DataValidator();
         Validator cpfValidator = new CPFValidator();
         String redirect = "jsp/exemplo.jsp";
         try {
-            
-            if (validarCampos(request, response) & dataValidator.validar(dtNasc)  
-                    & cpfValidator.validar(cpf)){
+
+            if (validarCampos(request, response) & dataValidator.validar(dtNasc)
+                    & cpfValidator.validar(cpf)) {
                 redirect = "jsp/exemplo-result.jsp";
             }
         } catch (ValidationException e) {
             String msgErro = "";
-            if(request.getAttribute("msgErro") != null){
-                msgErro = (String)request.getAttribute("msgErro");
+            if (request.getAttribute("msgErro") != null) {
+                msgErro = (String) request.getAttribute("msgErro");
             }
-             msgErro +=e.getMessage() + "<br/>";
+            msgErro += e.getMessage() + "<br/>";
             request.setAttribute("msgErro", msgErro);
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);
@@ -77,7 +77,6 @@ public class Novo extends HttpServlet {
         String email = request.getParameter("email");
         String cpf = request.getParameter("cpf");
         String dtNasc = request.getParameter("dtNasc");
-        
 
         if (nome == null || "".equals(nome)) {
             retorno = false;
@@ -98,7 +97,7 @@ public class Novo extends HttpServlet {
         if (dtNasc == null || "".equals(dtNasc)) {
             retorno = false;
             msgErro += "Campo Data Nascimento Obrigatório<br/>";
-        } 
+        }
         request.setAttribute("msgErro", msgErro);
         return retorno;
 
